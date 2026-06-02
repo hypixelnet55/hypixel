@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر الرتب الرسمي</title>
+    <link rel="stylesheet" href="shop-style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">MC-SHOP</div>
+        <p>احصل على رتبتك فوراً ودعم السيرفر</p>
+    </header>
+
+    <div class="container">
+        <div class="section">
+            <h3>1. معلومات اللاعب</h3>
+            <input type="text" id="username" placeholder="أدخل اسمك داخل ماينكرافت (Username)" required>
+        </div>
+
+        <div class="section">
+            <h3>2. اختر الرتبة المفضلة</h3>
+            <div class="ranks-grid">
+                <div class="rank-card" onclick="selectRank('VIP', 5)">
+                    <h4>رتبة VIP</h4>
+                    <p class="price">$5.00</p>
+                    <ul>
+                        <li>تلوين الاسم باللون الأخضر</li>
+                        <li>الدخول للسيرفر الممتلئ</li>
+                    </ul>
+                </div>
+                <div class="rank-card" onclick="selectRank('MVP', 15)">
+                    <h4>رتبة MVP</h4>
+                    <p class="price">$15.00</p>
+                    <ul>
+                        <li>كل ميزات VIP</li>
+                        <li>طيران في الردهة (Lobby)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>3. طريقة الدفع</h3>
+            <div class="payment-methods">
+                <button class="pay-btn" onclick="setPayment('PayPal')">بوابة PayPal</button>
+                <button class="pay-btn" onclick="setPayment('Credit Card')">بطاقة ائتمانية</button>
+            </div>
+        </div>
+
+        <button class="checkout-btn" onclick="processCheckout()">إتمام عملية الشراء</button>
+    </div>
+
+    <script>
+        let selectedRank = '';
+        let selectedPrice = 0;
+        let selectedPayment = '';
+
+        function selectRank(rank, price) {
+            selectedRank = rank;
+            selectedPrice = price;
+            alert('تم اختيار رتبة: ' + rank);
+        }
+
+        function setPayment(method) {
+            selectedPayment = method;
+            alert('تم اختيار طريقة الدفع: ' + method);
+        }
+
+        function processCheckout() {
+            const user = document.getElementById('username').value;
+            if(!user || !selectedRank || !selectedPayment) {
+                alert('يرجى ملء جميع البيانات واختيار الرتبة والدفع!');
+                return;
+            }
+            alert(`جاري توجيه اللاعب (${user}) لدفع ${selectedPrice}$ عبر ${selectedPayment} للحصول على رتبة ${selectedRank}`);
+        }
+    </script>
+</body>
+</html>
